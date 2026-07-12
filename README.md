@@ -273,15 +273,6 @@ Production-ready platform with multi-workspace support, role-based access contro
 
 ---
 
-## Upwork Portfolio
-
-**Title:** AI-Powered Knowledge Base & Customer Support Platform
-
-**Description:**
-Built a complete multi-tenant SaaS platform that enables businesses to upload documents, build searchable knowledge bases, and deploy AI assistants that answer customer questions using RAG (Retrieval-Augmented Generation). Features include workspace isolation, team collaboration with role-based access, document processing pipeline, real-time streaming AI chat with source citations, usage analytics dashboard, notification system, and subscription management. Premium UI with Plus Jakarta Sans typography, noise texture backgrounds, glass morphism effects, and split-screen auth layout. Designed for production deployment with SQLite (swap to PostgreSQL for scale).
-
-**Skills/Tags:** Next.js, React, TypeScript, Prisma, SQLite, OpenAI, RAG, SaaS, Tailwind CSS, shadcn/ui, Authentication, Multi-Tenant, Full-Stack Development, AI Integration, REST API, NextAuth.js
-
 **GitHub Repository:** `knowbase-ai` — "Multi-tenant SaaS knowledge base with RAG-powered AI assistant, built with Next.js 16, TypeScript, Prisma 7, and Plus Jakarta Sans."
 
 ---
