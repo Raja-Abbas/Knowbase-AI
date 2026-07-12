@@ -1,0 +1,214 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ─── Auth Models ────────────────────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts  Account[]
+  sessions  Session[]
+  workspaces WorkspaceMember[]
+  ownedWorkspaces Workspace[] @relation("WorkspaceOwner")
+  documents  Document[]
+  conversations Conversation[]
+  apiUsage   ApiUsage[]
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─── Workspace & Team ───────────────────────────────────────────────────────
+
+model Workspace {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  logo        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  ownerId String
+  owner   User    @relation("WorkspaceOwner", fields: [ownerId], references: [id])
+
+  members          WorkspaceMember[]
+  knowledgeSources KnowledgeSource[]
+  documents        Document[]
+  conversations    Conversation[]
+  subscriptions    Subscription[]
+  apiUsage         ApiUsage[]
+  teamInvites      TeamInvite[]
+}
+
+model WorkspaceMember {
+  id        String   @id @default(cuid())
+  role      String   @default("MEMBER")
+  createdAt DateTime @default(now())
+
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, workspaceId])
+}
+
+model TeamInvite {
+  id        String   @id @default(cuid())
+  email     String
+  role      String   @default("MEMBER")
+  token     String   @unique
+  expires   DateTime
+  accepted  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}
+
+// ─── Knowledge Base ─────────────────────────────────────────────────────────
+
+model KnowledgeSource {
+  id          String   @id @default(cuid())
+  name        String
+  type        String
+  url         String?
+  status      String   @default("PENDING")
+  chunkCount  Int      @default(0)
+  lastSynced  DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  documents   Document[]
+}
+
+model Document {
+  id          String   @id @default(cuid())
+  title       String
+  content     String
+  metadata    String?
+  chunkCount  Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workspaceId   String
+  workspace     Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  sourceId      String?
+  source        KnowledgeSource? @relation(fields: [sourceId], references: [id], onDelete: SetNull)
+  authorId      String
+  author        User @relation(fields: [authorId], references: [id])
+  chunks        DocumentChunk[]
+}
+
+model DocumentChunk {
+  id        String   @id @default(cuid())
+  content   String
+  position  Int
+  embedding String?
+  metadata  String?
+  createdAt DateTime @default(now())
+
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+}
+
+// ─── AI Chat ────────────────────────────────────────────────────────────────
+
+model Conversation {
+  id        String   @id @default(cuid())
+  title     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User @relation(fields: [userId], references: [id])
+  messages    Message[]
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  role      String
+  content   String
+  sources   String?
+  metadata  String?
+  createdAt DateTime @default(now())
+
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+}
+
+// ─── Subscriptions & Usage ──────────────────────────────────────────────────
+
+model Subscription {
+  id        String   @id @default(cuid())
+  plan      String   @default("FREE")
+  status    String   @default("ACTIVE")
+  startDate DateTime @default(now())
+  endDate   DateTime?
+
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}
+
+model ApiUsage {
+  id          String   @id @default(cuid())
+  tokensUsed  Int      @default(0)
+  requestCount Int     @default(0)
+  period      String
+  createdAt   DateTime @default(now())
+
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User @relation(fields: [userId], references: [id])
+}
