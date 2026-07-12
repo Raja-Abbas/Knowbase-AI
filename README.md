@@ -8,7 +8,7 @@ A multi-tenant SaaS application where businesses can create workspaces, upload d
 
 ## Live Demo
 
-> [https://knowbase-ai.vercel.app](https://knowbase-ai.vercel.app) *(placeholder)*
+> [https://knowbase-ai.netlify.app](https://knowbase-ai.netlify.app) *(placeholder)*
 
 ## Screenshots
 
