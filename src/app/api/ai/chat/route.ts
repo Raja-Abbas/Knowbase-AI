@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    let conversation;
+    let conversation: { id: string; title: string | null; workspaceId: string; userId: string; createdAt: Date; updatedAt: Date } | null = null;
     if (conversationId) {
       conversation = await prisma.conversation.findUnique({
         where: { id: conversationId },
@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    const userMessage = await prisma.message.create({
+    await prisma.message.create({
       data: {
         role: "USER",
         content: message,
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
 
     const ragResult = await runRAGPipeline(
       message,
-      relevantDocuments.map((doc) => ({
+      relevantDocuments.map((doc: { id: string; title: string; content: string | null }) => ({
         id: doc.id,
         title: doc.title,
         content: doc.content || "",
@@ -91,7 +91,6 @@ export async function POST(request: NextRequest) {
       async start(controller) {
         try {
           const sources = ragResult.sources || [];
-          const sourceMetadata = JSON.stringify({ sources });
           controller.enqueue(
             encoder.encode(`data: ${JSON.stringify({ type: "sources", sources })}\n\n`)
           );
@@ -116,14 +115,14 @@ export async function POST(request: NextRequest) {
               role: "ASSISTANT",
               content: fullResponse,
               conversationId: conversation.id,
-               metadata: {
-                 sources: sources.map((s) => ({
-                   documentId: s.documentId,
-                   title: s.documentTitle,
-                   relevance: s.score,
-                 })),
+              metadata: JSON.stringify({
+                sources: sources.map((s: { documentId: string; documentTitle: string; score: number }) => ({
+                  documentId: s.documentId,
+                  title: s.documentTitle,
+                  relevance: s.score,
+                })),
                 tokenUsage: ragResult.tokenUsage || 0,
-              },
+              }),
             },
           });
 
