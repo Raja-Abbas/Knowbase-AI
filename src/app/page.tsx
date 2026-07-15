@@ -171,10 +171,10 @@ export default function HomePage() {
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
-                href="/register"
+                href="/dashboard"
                 className="group inline-flex h-12 items-center rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:bg-primary/90 transition-all duration-200 w-full sm:w-auto justify-center"
               >
-                Start for free
+                Launch Dashboard Free
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
               <Link
@@ -362,10 +362,10 @@ export default function HomePage() {
               </p>
               <div className="mt-8">
                 <Link
-                  href="/register"
+                  href="/dashboard"
                   className="group inline-flex h-12 items-center rounded-xl bg-white px-7 text-sm font-bold text-primary shadow-lg hover:bg-white/90 transition-all duration-200"
                 >
-                  Get started for free
+                  Launch Dashboard Free
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </Link>
               </div>

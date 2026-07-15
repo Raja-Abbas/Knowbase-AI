@@ -36,16 +36,10 @@ export function MarketingNav() {
           </Link>
           <div className="mx-3 h-4 w-px bg-border/60" />
           <Link
-            href="/login"
-            className="rounded-lg px-3.5 py-2 text-[13.5px] font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Sign in
-          </Link>
-          <Link
-            href="/register"
+            href="/dashboard"
             className="ml-2 inline-flex h-9 items-center rounded-xl bg-primary px-4 text-[13.5px] font-semibold text-primary-foreground shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/25 hover:bg-primary/90 transition-all"
           >
-            Get started
+            Launch Dashboard
           </Link>
         </div>
 
@@ -98,18 +92,11 @@ export function MarketingNav() {
             </Link>
             <div className="my-1.5 h-px bg-border/60" />
             <Link
-              href="/login"
-              onClick={() => setMobileOpen(false)}
-              className="rounded-lg px-3 py-2.5 text-[13.5px] font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
-            >
-              Sign in
-            </Link>
-            <Link
-              href="/register"
+              href="/dashboard"
               onClick={() => setMobileOpen(false)}
               className="inline-flex items-center justify-center rounded-xl bg-primary px-4 py-2.5 text-[13.5px] font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
             >
-              Get started
+              Launch Dashboard
             </Link>
           </div>
         </div>
