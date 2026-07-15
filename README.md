@@ -137,7 +137,7 @@ knowbase-ai/
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/knowbase-ai.git
+git clone https://github.com/raja-abbas-affandi/knowbase-ai.git
 cd knowbase-ai
 
 # Install dependencies
