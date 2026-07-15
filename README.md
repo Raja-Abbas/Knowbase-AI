@@ -2,13 +2,17 @@
 
 **AI-Powered Knowledge Base & Customer Support Platform**
 
+> **Status:** MVP 1 — Feature-complete prototype. All core features implemented and working. Login removed for public testing — all pages freely accessible.
+
 A multi-tenant SaaS application where businesses can create workspaces, upload documents, manage knowledge sources, and use an AI assistant to answer questions based on their business knowledge.
 
 ---
 
 ## Live Demo
 
-> [https://knowbase-ai.netlify.app](https://knowbase-ai.netlify.app) *(placeholder)*
+> [https://knowbase-ai.netlify.app](https://knowbase-ai.netlify.app)
+
+> **Note:** Authentication has been removed for this MVP to allow free access to all features. No login or signup required.
 
 ## Screenshots
 
